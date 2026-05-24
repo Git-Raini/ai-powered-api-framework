@@ -1,30 +1,47 @@
-import { test, expect } from '@playwright/test';
+import {
+    test,
+    expect
+}
+from '@playwright/test';
 
-import { APIClient } from '../api/apiClient';
+import {
+    APIClient
+}
+from '../api/apiClient';
+
+import {
+    usersSchema
+}
+from '../schemas/usersSchema';
+
+import {
+    validateSchema
+}
+from '../utils/schemaValidator';
 
 test(
-'@smoke Verify users API',
+'@api Verify users API schema',
 
-async ({ request }) => {
+async({request})=>{
 
-    const apiClient =
-        new APIClient(request);
+const apiClient =
+new APIClient(request);
 
-    const response =
-        await apiClient.get(
-            'https://jsonplaceholder.typicode.com/users'
-        );
+const response =
+await apiClient.get(
+'https://jsonplaceholder.typicode.com/users'
+);
 
-    const responseBody =
-        await response.json();
+const responseBody =
+await response.json();
 
-    expect(
-        responseBody.length
-    ).toBeGreaterThan(0);
+expect(
 
-    expect(
-        responseBody[0].name
-    ).toBeTruthy();
+validateSchema(
+usersSchema,
+responseBody
+)
+
+).toBeTruthy();
 
 });
-
