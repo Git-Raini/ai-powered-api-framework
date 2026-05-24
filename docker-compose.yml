@@ -1,0 +1,9 @@
+services:
+
+  api-framework:
+
+    build: .
+
+    container_name: ai-powered-api-framework
+
+    command: npx playwright test --grep "@api"
