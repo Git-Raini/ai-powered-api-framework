@@ -67,6 +67,8 @@ export class APIClient {
                 }
             );
 
+            
+
         expect(
             response.ok()
         ).toBeTruthy();
@@ -74,5 +76,53 @@ export class APIClient {
         return response;
 
     }
+async put(
+    endpoint: string,
+    payload: object
+){
 
+    const response =
+        await this.request.put(
+            endpoint,
+            {
+                headers:{
+                    Authorization:
+                    TokenManager.getToken()
+                },
+
+                data: payload
+            }
+        );
+
+    expect(
+        response.ok()
+    ).toBeTruthy();
+
+    return response;
+
+}
+
+
+async delete(
+    endpoint:string
+){
+
+    const response =
+        await this.request.delete(
+            endpoint,
+            {
+                headers:{
+                    Authorization:
+                    TokenManager.getToken()
+                }
+            }
+        );
+
+    expect(
+        response.ok()
+    ).toBeTruthy();
+
+    return response;
+
+}
 }
