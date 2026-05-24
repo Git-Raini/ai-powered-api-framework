@@ -1,22 +1,49 @@
-import { APIRequestContext, expect } from '@playwright/test';
+import {
+    APIRequestContext,
+    expect
+}
+from '@playwright/test';
+
+import {
+    TokenManager
+}
+from '../auth/tokenManager';
 
 export class APIClient {
 
     readonly request: APIRequestContext;
 
-    constructor(request: APIRequestContext) {
+    constructor(
+        request: APIRequestContext
+    ) {
 
         this.request = request;
 
     }
 
-    async get(endpoint: string) {
+    async get(
+        endpoint: string
+    ) {
 
-        const response = await this.request.get(endpoint);
+        const response =
+            await this.request.get(
+                endpoint,
+                {
+                    headers: {
 
-        expect(response.ok()).toBeTruthy();
+                        Authorization:
+                        TokenManager.getToken()
+
+                    }
+                }
+            );
+
+        expect(
+            response.ok()
+        ).toBeTruthy();
 
         return response;
+
     }
 
     async post(
@@ -24,16 +51,28 @@ export class APIClient {
         payload: object
     ) {
 
-        const response = await this.request.post(
-            endpoint,
-            {
-                data: payload
-            }
-        );
+        const response =
+            await this.request.post(
+                endpoint,
+                {
+                    headers: {
 
-        expect(response.ok()).toBeTruthy();
+                        Authorization:
+                        TokenManager.getToken()
+
+                    },
+
+                    data: payload
+
+                }
+            );
+
+        expect(
+            response.ok()
+        ).toBeTruthy();
 
         return response;
+
     }
 
 }

@@ -1,29 +1,58 @@
-import { test, expect } from '@playwright/test';
+import {
+test,
+expect
+}
+from '@playwright/test';
 
-import { AuthService } from '../auth/authService';
+import {
+AuthService
+}
+from '../auth/authService';
 
-import { TokenManager } from '../auth/tokenManager';
+import {
+TokenManager
+}
+from '../auth/tokenManager';
+
+import {
+APIClient
+}
+from '../api/apiClient';
 
 test(
-'@api Verify authentication and request chaining',
+'@api Verify authenticated request flow',
 
-async ({ request }) => {
+async({request})=>{
 
-    const authService =
-        new AuthService(request);
+const authService =
+new AuthService(request);
 
-    const token =
-        await authService.login();
+const token =
+await authService.login();
 
-    TokenManager.setToken(token);
+TokenManager.setToken(
+token
+);
 
-    expect(
-        TokenManager.getToken()
-    ).toBeTruthy();
+const apiClient =
+new APIClient(request);
 
-    console.log(
-        'Generated Token:',
-        TokenManager.getToken()
-    );
+const response =
+await apiClient.get(
+'https://jsonplaceholder.typicode.com/users'
+);
+
+const responseBody =
+await response.json();
+
+expect(
+responseBody.length
+)
+.toBeGreaterThan(0);
+
+console.log(
+'Token:',
+TokenManager.getToken()
+);
 
 });
