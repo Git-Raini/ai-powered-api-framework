@@ -4,28 +4,22 @@ export class AuthService {
 
     readonly request: APIRequestContext;
 
-    constructor(request: APIRequestContext){
+    constructor(request: APIRequestContext) {
 
-        this.request=request;
+        this.request = request;
+
     }
 
-    async login(){
+    async login() {
 
-        const response =
-            await this.request.post(
-                'https://reqres.in/api/login',
-                {
-                    data:{
-                        email:'eve.holt@reqres.in',
-                        password:'cityslicka'
-                    }
-                }
-            );
+        // Simulated token generation
+        // In real projects this would come from auth API
 
-        const responseBody =
-            await response.json();
+        const fakeToken =
+            `Bearer-token-${Date.now()}`;
 
-        return responseBody.token;
+        return fakeToken;
+
     }
 
 }
